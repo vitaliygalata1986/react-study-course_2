@@ -4,25 +4,31 @@ class Form extends React.Component {
   state = {
     firstName: '',
     email: '',
+    message: '',
+    select: '',
+    subscription: false,
+    subscription_2: false,
+    gender: '',
   };
 
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value }); // создаем динамич. ключ
   };
 
-  validateName = () => {
-    if (this.state.firstName.length < 5) {
-      alert("Your first name can't be less than 7 letters");
-    }
-  };
-
-  validateEmail = () => {
-    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email))
-      alert('email is not valid');
+  handleCheckboxChange = (event) => {
+    this.setState({ [event.target.name]: event.target.checked });
   };
 
   render() {
-    const { firstName, email } = this.state;
+    const {
+      firstName,
+      email,
+      message,
+      select,
+      subscription,
+      subscription_2,
+      gender,
+    } = this.state;
     return (
       <div>
         <input
@@ -31,16 +37,66 @@ class Form extends React.Component {
           placeholder="firstName"
           value={firstName}
           onChange={this.handleChange}
-          onBlur={this.validateName}
         />
+        <br />
         <input
           type="email"
           name="email"
           placeholder="email"
           value={email}
           onChange={this.handleChange}
-          onBlur={this.validateEmail}
         />
+        <br />
+        <textarea
+          name="message"
+          value={message}
+          onChange={this.handleChange}
+        ></textarea>
+        <br />
+        <select name="select" value={select} onChange={this.handleChange}>
+          <option value="" disabled>
+            Выберите...
+          </option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+        <br />
+        <label>
+          <input
+            type="checkbox"
+            name="subscription"
+            checked={subscription}
+            onChange={this.handleCheckboxChange}
+          />
+          Subscription 1
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            name="subscription_2"
+            checked={subscription_2}
+            onChange={this.handleCheckboxChange}
+          />
+          Subscription 2
+        </label>
+        <br />
+        <input
+          type="radio"
+          name="gender"
+          value="male"
+          onChange={this.handleChange}
+          checked={gender === 'male'}
+        />
+        Male
+        <input
+          type="radio"
+          name="gender"
+          value="female"
+          onChange={this.handleChange}
+          checked={gender === 'female'}
+        />
+        Female
       </div>
     );
   }
