@@ -3,61 +3,55 @@ import React from 'react';
 class Form extends React.Component {
   constructor() {
     super();
-    this.state = {
-      card: '',
-      email: '',
-    };
-    this.firstNameRef = React.createRef(); // ссылка на объект Ref
+    this.cardRef = React.createRef(); // ссылка на объект Ref
     this.emailRef = React.createRef();
   }
 
-  handleEmail = (event) => {
-    this.setState({ email: event.target.value }); // создаем динамич. ключ
-  };
-
-  handleChange = (event) => {
-    this.setState(
-      // setState если первым параметром принимает функцию, то вторым параметром может принимать коллбэк
-      // после того, как наша card обновилась, мы сделаем проверку на символы
-      () => ({ [event.target.name]: event.target.value }),
-      () => {
-        if (this.state.card.length === 16) {
-          // после того как мы вбили 16 символов
-          // то установим фокус на след. инпуте
-          this.emailRef.current.focus();
-        }
-      }
-    );
-  };
-
   componentDidMount() {
     // console.log(this.firstNameRef);
-    this.firstNameRef.current.focus();
+    this.emailRef.current.focus();
   }
 
+  handleSubmit = (event) => {
+    event.preventDefault();
+    if (this.cardRef.current.value.length < 16) {
+      alert('invalid card number');
+      return;
+    }
+    if (
+      !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+        this.emailRef.current.value
+      )
+    ) {
+      alert('email is not valid');
+      return;
+    }
+
+    // send
+    // после отправки обнуляем поля
+    this.cardRef.current.value = '';
+    this.emailRef.current.value = '';
+  };
+
   render() {
-    const { email, card } = this.state;
     return (
-      <div>
+      <form onSubmit={this.handleSubmit}>
         <input
           type="number"
           name="card"
-          value={card}
           placeholder="card"
-          onChange={this.handleChange}
-          ref={this.firstNameRef}
+          ref={this.cardRef}
         />
         <br />
         <input
           type="email"
           name="email"
           placeholder="email"
-          value={email}
-          onChange={this.handleEmail}
           ref={this.emailRef}
         />
         <br />
-      </div>
+        <button type="submit">Send</button>
+      </form>
     );
   }
 }
