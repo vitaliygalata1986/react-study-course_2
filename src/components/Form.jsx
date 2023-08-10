@@ -7,7 +7,7 @@ class Form extends React.Component {
       card: '',
       email: '',
     };
-    this.firstNameRef = React.createRef();
+    this.firstNameRef = React.createRef(); // ссылка на объект Ref
     this.emailRef = React.createRef();
   }
 
@@ -17,6 +17,8 @@ class Form extends React.Component {
 
   handleChange = (event) => {
     this.setState(
+      // setState если первым параметром принимает функцию, то вторым параметром может принимать коллбэк
+      // после того, как наша card обновилась, мы сделаем проверку на символы
       () => ({ [event.target.name]: event.target.value }),
       () => {
         if (this.state.card.length === 16) {
